@@ -16,6 +16,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from '@mui/material/Paper';
+import { Link } from "react-router-dom";
 
 const Main = styled.div`
   & .features {
@@ -24,6 +25,9 @@ const Main = styled.div`
     align-items: center;
     border:1px solid #c4c4c4;
     padding:1%;
+  }
+  & a{
+    text-decoration:none;
   }
 `;
 
@@ -51,6 +55,13 @@ export const Home = () => {
       <br />
       <br />
       <div className="features">
+
+        <Link to={"/resident-detail"}>
+          <Button variant="contained"
+            aria-label="outlined primary button group"
+          >Add details</Button>
+        </Link>
+
         <TextField id="outlined-basic" label="Search" variant="outlined" />
 
         <Pagination count={10} color="primary" />

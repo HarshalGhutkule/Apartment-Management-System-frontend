@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Main = styled.div`
   & a {
@@ -17,6 +18,7 @@ const Main = styled.div`
 `;
 
 export const Navbar = () => {
+  const a = useSelector((store)=>store.username);
   return (
     <Main>
       <Box sx={{ flexGrow: 1 }}>
@@ -37,7 +39,7 @@ export const Navbar = () => {
               APARTMENT MANAGER
             </Typography>
             <Link to={"/register"}>
-              <Button color="inherit">Login</Button>
+              <Button color="inherit">{a ? a : "Log in"}</Button>
             </Link>
           </Toolbar>
         </AppBar>

@@ -3,12 +3,13 @@ import styled from "styled-components";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Main = styled.div`
   align-items: center;
   & .box {
-    height: 400px;
+    height: 350px;
     width: 300px;
     margin: auto;
     margin-top: 20px;
@@ -28,6 +29,39 @@ const Main = styled.div`
 `;
 
 export const Register = () => {
+
+    const navigate = useNavigate();
+
+    const initalState = {
+        userName:"",
+        password:""
+    }
+
+    const reducer = (state,{type,payload})=>{
+        switch(type){
+            case "userName":
+                return {...state,userName:payload};
+            case "password":
+                return {...state,password:payload};
+            default:
+                return state;
+        }
+    }
+
+    const [state,dispatch] = React.useReducer(reducer,initalState);
+
+    let {userName,password} = state;
+
+    const userRegistered = (e)=>{
+        e.preventDefault();
+        axios.post("http://localhost:3001/register",state).then(()=>{
+            alert("Registration Successful");
+            dispatch({type:"userName",payload:""})
+            dispatch({type:"password",payload:""})
+            navigate("/login");
+        }).catch(()=>alert("Please try another username & password"))
+    }
+    
   return (
     <Main>
       <Box className="box">
@@ -37,29 +71,23 @@ export const Register = () => {
             id="outlined-basic"
             type={"text"}
             label="Username"
+            value={userName}
             variant="outlined"
+            onChange={(e)=>dispatch({type:"userName",payload:e.target.value})}
           />
           <br />
           <br />
           <TextField
             id="outlined-basic"
-            type={"text"}
+            type={"password"}
             label="Password"
+            value={password}
             variant="outlined"
-            
+            onChange={(e)=>dispatch({type:"password",payload:e.target.value})}
           />
           <br />
           <br />
-          <TextField
-            id="outlined-basic"
-            type={"text"}
-            label="Apartment"
-            variant="outlined"
-            
-          />
-          <br />
-          <br />
-          <Button variant="contained">
+          <Button variant="contained" onClick={userRegistered}>
             Register
           </Button>
         </form>
