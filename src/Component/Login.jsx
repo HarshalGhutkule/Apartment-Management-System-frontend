@@ -11,7 +11,7 @@ import { addToken, addUsername } from "../Redux/Action";
 const Main = styled.div`
   align-items: center;
   & .box {
-    height: 400px;
+    height: 300px;
     width: 300px;
     margin: auto;
     margin-top: 20px;
@@ -39,7 +39,6 @@ export const Login = () => {
     const initalState = {
         userName:"",
         password:"",
-        apartmentName:""
     }
 
     const reducer = (state,{type,payload})=>{
@@ -48,8 +47,6 @@ export const Login = () => {
                 return {...state,userName:payload};
             case "password":
                 return {...state,password:payload};
-            case "apartmentName":
-                return {...state,apartmentName:payload};
             default:
                 return state;
         }
@@ -57,7 +54,7 @@ export const Login = () => {
 
     const [state,dispatch] = React.useReducer(reducer,initalState);
 
-    let {userName,password,apartmentName} = state;
+    let {userName,password} = state;
 
     const userLogin = (e)=>{
         e.preventDefault();
@@ -65,9 +62,7 @@ export const Login = () => {
             alert("Login Successful");
             dispatch({type:"userName",payload:""})
             dispatch({type:"password",payload:""})
-            dispatch({type:"apartmentName",payload:""})
             dispatchRedux(addUsername(state.userName))
-            console.log(res.data.token);
             dispatchRedux(addToken(res.data.token))
             navigate("/")
         }).catch(()=>alert("Please try another username & password"))
@@ -95,16 +90,6 @@ export const Login = () => {
             value={password}
             variant="outlined"
             onChange={(e)=>dispatch({type:"password",payload:e.target.value})}
-          />
-          <br />
-          <br />
-          <TextField
-            id="outlined-basic"
-            type={"text"}
-            label="Apartment"
-            value={apartmentName}
-            variant="outlined"
-            onChange={(e)=>dispatch({type:"apartmentName",payload:e.target.value})}
           />
           <br />
           <br />

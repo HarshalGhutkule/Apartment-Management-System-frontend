@@ -59,7 +59,7 @@ export const Register = () => {
             dispatch({type:"userName",payload:""})
             dispatch({type:"password",payload:""})
             navigate("/login");
-        }).catch(()=>alert("Please try another username & password"))
+        }).catch(()=>alert("Password is Not Strong"))
     }
     
   return (

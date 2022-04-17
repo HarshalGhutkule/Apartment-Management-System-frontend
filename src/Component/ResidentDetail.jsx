@@ -6,6 +6,10 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Navigate} from "react-router-dom";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 const Main = styled.div`
   align-items: center;
@@ -35,7 +39,6 @@ const Main = styled.div`
 export const ResidentDetail = () => {
 
     let token = useSelector((store)=>store.token);
-    console.log("token",token);
     const user = useSelector((store)=>store.username);
 
     const initalState = {
@@ -43,7 +46,8 @@ export const ResidentDetail = () => {
         age:"",
         gender:"",
         apartmentName:"",
-        flatNumber:""
+        flatNumber:"",
+        blockName:""
     }
 
     const reducer = (state,{type,payload})=>{
@@ -58,6 +62,8 @@ export const ResidentDetail = () => {
                 return {...state,apartmentName:payload};
             case "flatNumber":
                 return {...state,flatNumber:payload};
+            case "blockName":
+                return {...state,blockName:payload};
             default:
                 return state;
         }
@@ -65,7 +71,7 @@ export const ResidentDetail = () => {
 
     const [state,dispatch] = React.useReducer(reducer,initalState);
 
-    let {name,age,gender,apartmentName,flatNumber} = state;
+    let {name,age,gender,apartmentName,flatNumber,blockName} = state;
 
     const addResident = (e)=>{
         e.preventDefault();
@@ -74,6 +80,12 @@ export const ResidentDetail = () => {
               'Authorization': `Bearer ${token}` 
             }}).then(()=>{
             alert("Resident added Successful");
+            dispatch({type:"name",payload:""})
+            dispatch({type:"age",payload:""})
+            dispatch({type:"gender",payload:""})
+            dispatch({type:"apartmentName",payload:""})
+            dispatch({type:"flatNumber",payload:""})
+            dispatch({type:"blockName",payload:""})
         }).catch(()=>alert("Something went wrong"))
     }
 
@@ -105,15 +117,21 @@ export const ResidentDetail = () => {
             
           />
           <br /><br />
-          <TextField
-            id="outlined-basic"
-            type={"text"}
-            label="Gender"
-            value={gender}
-            variant="outlined"
-            onChange={(e)=>dispatch({type:"gender",payload:e.target.value})}
-            
-          />
+          <Box sx={{ minWidth: 220,display:"inline" }}>
+          <FormControl sx={{ minWidth: 210 }}>
+            <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={gender}
+              label="type"
+              onChange={(e)=>dispatch({type:"gender",payload:e.target.value})}
+            >
+              <MenuItem value={"Male"}>Male</MenuItem>
+              <MenuItem value={"Female"}>Female</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
           <span> </span>
           <TextField
             id="outlined-basic"
@@ -124,15 +142,15 @@ export const ResidentDetail = () => {
             onChange={(e)=>dispatch({type:"apartmentName",payload:e.target.value})}
           />
           <br /><br />
-          {/* <TextField
+          <TextField
             id="outlined-basic"
             type={"text"}
             label="Block Number"
-            value={""}
+            value={blockName}
             variant="outlined"
-            onChange={(e)=>dispatch({type:"",payload:e.target.value})}
+            onChange={(e)=>dispatch({type:"blockName",payload:e.target.value})}
           />
-          <span> </span> */}
+          <span> </span>
           <TextField
             id="outlined-basic"
             type={"text"}
