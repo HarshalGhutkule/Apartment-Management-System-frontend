@@ -1,4 +1,4 @@
-import { ADD_DATA } from "./ActionType"
+import { ADD_DATA, ADD_TOKEN } from "./ActionType"
 import { ADD_USERNAME } from "./ActionType"
 
 export const addDataToRedux = (payload)=>({
@@ -8,5 +8,10 @@ export const addDataToRedux = (payload)=>({
 
 export const addUsername = (payload)=>({
     type:ADD_USERNAME,
+    payload
+});
+
+export const addToken = (payload)=>({
+    type:ADD_TOKEN,
     payload
 });

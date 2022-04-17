@@ -16,7 +16,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from '@mui/material/Paper';
-import { Link } from "react-router-dom";
+import { Link, Navigate} from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Main = styled.div`
   & .features {
@@ -32,7 +33,11 @@ const Main = styled.div`
 `;
 
 export const Home = () => {
+
   const [type, setType] = React.useState("");
+
+  const user = useSelector((store)=>store.username);
+
 
   const handleChange = (event) => {
     setType(event.target.value);
@@ -49,6 +54,10 @@ export const Home = () => {
     createData('Cupcake', 305, 3.7, 67, 4.3),
     createData('Gingerbread', 356, 16.0, 49, 3.9),
   ];
+
+  if(user === "") {
+    return <Navigate to="/register"/>
+  }
 
   return (
     <Main>

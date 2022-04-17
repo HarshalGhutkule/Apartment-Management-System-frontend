@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addUsername } from "../Redux/Action";
+import { addToken, addUsername } from "../Redux/Action";
 
 const Main = styled.div`
   align-items: center;
@@ -61,12 +61,14 @@ export const Login = () => {
 
     const userLogin = (e)=>{
         e.preventDefault();
-        axios.post("http://localhost:3001/login",state).then(()=>{
+        axios.post("http://localhost:3001/login",state).then((res)=>{
             alert("Login Successful");
             dispatch({type:"userName",payload:""})
             dispatch({type:"password",payload:""})
             dispatch({type:"apartmentName",payload:""})
             dispatchRedux(addUsername(state.userName))
+            console.log(res.data.token);
+            dispatchRedux(addToken(res.data.token))
             navigate("/")
         }).catch(()=>alert("Please try another username & password"))
     }

@@ -1,4 +1,4 @@
-import { ADD_DATA, ADD_USERNAME } from "./ActionType";
+import { ADD_DATA, ADD_TOKEN, ADD_USERNAME } from "./ActionType";
 
 export const reducer = (store,{type,payload})=>{
 
@@ -7,6 +7,8 @@ export const reducer = (store,{type,payload})=>{
             return {...store,city:payload};
         case ADD_USERNAME:
                 return {...store,username:payload};
+        case ADD_TOKEN:
+            return {...store,token:payload};
         default:
             return store;
     }

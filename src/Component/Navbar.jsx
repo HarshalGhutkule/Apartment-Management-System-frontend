@@ -8,7 +8,8 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addUsername } from "../Redux/Action";
 
 const Main = styled.div`
   & a {
@@ -18,7 +19,15 @@ const Main = styled.div`
 `;
 
 export const Navbar = () => {
+
   const a = useSelector((store)=>store.username);
+
+  const dispatch = useDispatch();
+
+  const clearUser = ()=>{
+    dispatch(addUsername(""));
+  }
+  
   return (
     <Main>
       <Box sx={{ flexGrow: 1 }}>
@@ -41,6 +50,7 @@ export const Navbar = () => {
             <Link to={"/register"}>
               <Button color="inherit">{a ? a : "Log in"}</Button>
             </Link>
+            {a ? <Button color="inherit" onClick={clearUser}>Log out</Button> : <></>}
           </Toolbar>
         </AppBar>
       </Box>
