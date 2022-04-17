@@ -17,8 +17,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from '@mui/material/Paper';
 import { Link, Navigate} from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { addDataToRedux } from "../Redux/Action";
 
 const Main = styled.div`
   & .features {
@@ -36,7 +37,10 @@ const Main = styled.div`
 export const Home = () => {
 
   const [type, setType] = React.useState("");
-  const [data, setData] = React.useState([]);
+  let [data, setData] = React.useState([]);
+  let resident = useSelector((store)=>store.resident);
+
+  const dispatch = useDispatch();
 
   console.log(data);
 
@@ -44,6 +48,10 @@ export const Home = () => {
 
 
   const handleChange = (event) => {
+    console.log(event.target.value);
+    resident = resident.filter((a)=>event.target.value == a.residenttype);
+    console.log("data",data);
+    setData(resident);
     setType(event.target.value);
   };
 
@@ -53,18 +61,19 @@ export const Home = () => {
 
 
   const getData = () => {
-    axios.get("http://localhost:3001/apartment").then((res) => {
+    axios.get("http://localhost:3001/resident").then((res) => {
       setData(res.data);
+      dispatch(addDataToRedux(res.data));
     });
   };
 
   const sorting = (a)=>{
     if(a === 1){
-      data.sort((a,b)=>a.block_id[0].flat_id[1].flatNumber-b.block_id[0].flat_id[2].flatNumber);
+      data.sort((a,b)=>a.flatNumber-b.flatNumber);
         setData([...data]);
     }
     else{
-      data.sort((a,b)=>b.block_id[0].flat_id[3].flatNumber-a.block_id[0].flat_id[4].flatNumber);
+      data.sort((a,b)=>b.flatNumber-a.flatNumber);
         setData([...data]);
     }
   }
@@ -99,8 +108,8 @@ export const Home = () => {
               label="type"
               onChange={handleChange}
             >
-              <MenuItem value={10}>Owner</MenuItem>
-              <MenuItem value={20}>Tenant</MenuItem>
+              <MenuItem value={"Owner"}>Owner</MenuItem>
+              <MenuItem value={"Tenant"}>Tenant</MenuItem>
             </Select>
           </FormControl>
         </Box>
@@ -133,81 +142,11 @@ export const Home = () => {
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {row.block_id[0].blockName}
+                    {row.blockName}
                   </TableCell>
-                  <TableCell align="center">{row.block_id[0].flat_id[0].flatNumber}</TableCell>
-                  <TableCell align="center">{row.block_id[0].flat_id[0].resident_id[0].residenttype}</TableCell>
-                  <TableCell align="center">{row.block_id[0].flat_id[0].resident_id.length}</TableCell>
-                  <TableCell align="center">{"Edit"}</TableCell>
-                </TableRow>
-              ))}
-              {data && data.map((row) => (
-                <TableRow
-                  key={row._id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.block_id[0].blockName}
-                  </TableCell>
-                  <TableCell align="center">{row.block_id[0].flat_id[1].flatNumber}</TableCell>
-                  <TableCell align="center">{row.block_id[0].flat_id[1].resident_id[0].residenttype}</TableCell>
-                  <TableCell align="center">{row.block_id[0].flat_id[1].resident_id.length}</TableCell>
-                  <TableCell align="center">{"Edit"}</TableCell>
-                </TableRow>
-              ))}
-              {data && data.map((row) => (
-                <TableRow
-                  key={row._id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.block_id[0].blockName}
-                  </TableCell>
-                  <TableCell align="center">{row.block_id[0].flat_id[2].flatNumber}</TableCell>
-                  <TableCell align="center">{row.block_id[0].flat_id[2].resident_id[0].residenttype}</TableCell>
-                  <TableCell align="center">{row.block_id[0].flat_id[2].resident_id.length}</TableCell>
-                  <TableCell align="center">{"Edit"}</TableCell>
-                </TableRow>
-              ))}
-              {data && data.map((row) => (
-                <TableRow
-                  key={row._id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.block_id[0].blockName}
-                  </TableCell>
-                  <TableCell align="center">{row.block_id[0].flat_id[3].flatNumber}</TableCell>
-                  <TableCell align="center">{row.block_id[0].flat_id[3].resident_id[0].residenttype}</TableCell>
-                  <TableCell align="center">{row.block_id[0].flat_id[3].resident_id.length}</TableCell>
-                  <TableCell align="center">{"Edit"}</TableCell>
-                </TableRow>
-              ))}
-              {data && data.map((row) => (
-                <TableRow
-                  key={row._id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.block_id[0].blockName}
-                  </TableCell>
-                  <TableCell align="center">{row.block_id[0].flat_id[4].flatNumber}</TableCell>
-                  <TableCell align="center">{row.block_id[0].flat_id[4].resident_id[0].residenttype}</TableCell>
-                  <TableCell align="center">{row.block_id[0].flat_id[4].resident_id.length}</TableCell>
-                  <TableCell align="center">{"Edit"}</TableCell>
-                </TableRow>
-              ))}
-              {data && data.map((row) => (
-                <TableRow
-                  key={row._id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.block_id[0].blockName}
-                  </TableCell>
-                  <TableCell align="center">{row.block_id[0].flat_id[5].flatNumber}</TableCell>
-                  <TableCell align="center">{row.block_id[0].flat_id[5].resident_id[0].residenttype}</TableCell>
-                  <TableCell align="center">{row.block_id[0].flat_id[5].resident_id.length}</TableCell>
+                  <TableCell align="center">{row.flatNumber}</TableCell>
+                  <TableCell align="center">{row.residenttype}</TableCell>
+                  <TableCell align="center">{1}</TableCell>
                   <TableCell align="center">{"Edit"}</TableCell>
                 </TableRow>
               ))}

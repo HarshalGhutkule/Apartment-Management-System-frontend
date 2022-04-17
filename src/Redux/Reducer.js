@@ -4,7 +4,7 @@ export const reducer = (store,{type,payload})=>{
 
     switch(type){
         case ADD_DATA:
-            return {...store,city:payload};
+            return {...store,resident:payload};
         case ADD_USERNAME:
                 return {...store,username:payload};
         case ADD_TOKEN:
