@@ -14,7 +14,7 @@ import Select from "@mui/material/Select";
 const Main = styled.div`
   align-items: center;
   & .box {
-    height: 400px;
+    height: 450px;
     width: 600px;
     margin: auto;
     margin-top: 20px;
@@ -47,7 +47,8 @@ export const ResidentDetail = () => {
         gender:"",
         apartmentName:"",
         flatNumber:"",
-        blockName:""
+        blockName:"",
+        residenttype:""
     }
 
     const reducer = (state,{type,payload})=>{
@@ -64,6 +65,8 @@ export const ResidentDetail = () => {
                 return {...state,flatNumber:payload};
             case "blockName":
                 return {...state,blockName:payload};
+            case "residenttype":
+                return {...state,residenttype:payload};
             default:
                 return state;
         }
@@ -71,7 +74,7 @@ export const ResidentDetail = () => {
 
     const [state,dispatch] = React.useReducer(reducer,initalState);
 
-    let {name,age,gender,apartmentName,flatNumber,blockName} = state;
+    let {name,age,gender,apartmentName,flatNumber,blockName,residenttype} = state;
 
     const addResident = (e)=>{
         e.preventDefault();
@@ -86,6 +89,7 @@ export const ResidentDetail = () => {
             dispatch({type:"apartmentName",payload:""})
             dispatch({type:"flatNumber",payload:""})
             dispatch({type:"blockName",payload:""})
+            dispatch({type:"residenttype",payload:""})
         }).catch(()=>alert("Something went wrong"))
     }
 
@@ -159,6 +163,22 @@ export const ResidentDetail = () => {
             variant="outlined"
             onChange={(e)=>dispatch({type:"flatNumber",payload:e.target.value})}
           />
+          <br /><br />
+          <Box sx={{ minWidth: 220,display:"inline" }}>
+          <FormControl sx={{ minWidth: 210 }}>
+            <InputLabel id="demo-simple-select-label">Type</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={residenttype}
+              label="type"
+              onChange={(e)=>dispatch({type:"residenttype",payload:e.target.value})}
+            >
+              <MenuItem value={"Owner"}>Owner</MenuItem>
+              <MenuItem value={"Tenant"}>Tenant</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
           <br />
           <br />
           <Button variant="contained" onClick={addResident}>

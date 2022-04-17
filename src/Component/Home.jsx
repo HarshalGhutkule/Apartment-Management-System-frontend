@@ -18,6 +18,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from '@mui/material/Paper';
 import { Link, Navigate} from "react-router-dom";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 const Main = styled.div`
   & .features {
@@ -35,6 +36,9 @@ const Main = styled.div`
 export const Home = () => {
 
   const [type, setType] = React.useState("");
+  const [data, setData] = React.useState([]);
+
+  console.log(data);
 
   const user = useSelector((store)=>store.username);
 
@@ -43,17 +47,27 @@ export const Home = () => {
     setType(event.target.value);
   };
 
-  function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
+  React.useEffect(()=>{
+    getData();
+  },[])
+
+
+  const getData = () => {
+    axios.get("http://localhost:3001/apartment").then((res) => {
+      setData(res.data);
+    });
+  };
+
+  const sorting = (a)=>{
+    if(a === 1){
+      data.sort((a,b)=>a.block_id[0].flat_id[1].flatNumber-b.block_id[0].flat_id[2].flatNumber);
+        setData([...data]);
+    }
+    else{
+      data.sort((a,b)=>b.block_id[0].flat_id[3].flatNumber-a.block_id[0].flat_id[4].flatNumber);
+        setData([...data]);
+    }
   }
-  
-  const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-  ];
 
   if(user === "") {
     return <Navigate to="/register"/>
@@ -95,8 +109,8 @@ export const Home = () => {
           variant="contained"
           aria-label="outlined primary button group"
         >
-          <Button>Flat No. Asc</Button>
-          <Button>Flat No. Desc</Button>
+          <Button onClick={()=>sorting(1)}>Flat No. Asc</Button>
+          <Button onClick={()=>sorting(-1)}>Flat No. Desc</Button>
         </ButtonGroup>
       </div>
 
@@ -113,18 +127,88 @@ export const Home = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
+              {data && data.map((row) => (
                 <TableRow
-                  key={row.name}
+                  key={row._id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {row.name}
+                    {row.block_id[0].blockName}
                   </TableCell>
-                  <TableCell align="center">{row.calories}</TableCell>
-                  <TableCell align="center">{row.fat}</TableCell>
-                  <TableCell align="center">{row.carbs}</TableCell>
-                  <TableCell align="center">{row.protein}</TableCell>
+                  <TableCell align="center">{row.block_id[0].flat_id[0].flatNumber}</TableCell>
+                  <TableCell align="center">{row.block_id[0].flat_id[0].resident_id[0].residenttype}</TableCell>
+                  <TableCell align="center">{row.block_id[0].flat_id[0].resident_id.length}</TableCell>
+                  <TableCell align="center">{"Edit"}</TableCell>
+                </TableRow>
+              ))}
+              {data && data.map((row) => (
+                <TableRow
+                  key={row._id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.block_id[0].blockName}
+                  </TableCell>
+                  <TableCell align="center">{row.block_id[0].flat_id[1].flatNumber}</TableCell>
+                  <TableCell align="center">{row.block_id[0].flat_id[1].resident_id[0].residenttype}</TableCell>
+                  <TableCell align="center">{row.block_id[0].flat_id[1].resident_id.length}</TableCell>
+                  <TableCell align="center">{"Edit"}</TableCell>
+                </TableRow>
+              ))}
+              {data && data.map((row) => (
+                <TableRow
+                  key={row._id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.block_id[0].blockName}
+                  </TableCell>
+                  <TableCell align="center">{row.block_id[0].flat_id[2].flatNumber}</TableCell>
+                  <TableCell align="center">{row.block_id[0].flat_id[2].resident_id[0].residenttype}</TableCell>
+                  <TableCell align="center">{row.block_id[0].flat_id[2].resident_id.length}</TableCell>
+                  <TableCell align="center">{"Edit"}</TableCell>
+                </TableRow>
+              ))}
+              {data && data.map((row) => (
+                <TableRow
+                  key={row._id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.block_id[0].blockName}
+                  </TableCell>
+                  <TableCell align="center">{row.block_id[0].flat_id[3].flatNumber}</TableCell>
+                  <TableCell align="center">{row.block_id[0].flat_id[3].resident_id[0].residenttype}</TableCell>
+                  <TableCell align="center">{row.block_id[0].flat_id[3].resident_id.length}</TableCell>
+                  <TableCell align="center">{"Edit"}</TableCell>
+                </TableRow>
+              ))}
+              {data && data.map((row) => (
+                <TableRow
+                  key={row._id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.block_id[0].blockName}
+                  </TableCell>
+                  <TableCell align="center">{row.block_id[0].flat_id[4].flatNumber}</TableCell>
+                  <TableCell align="center">{row.block_id[0].flat_id[4].resident_id[0].residenttype}</TableCell>
+                  <TableCell align="center">{row.block_id[0].flat_id[4].resident_id.length}</TableCell>
+                  <TableCell align="center">{"Edit"}</TableCell>
+                </TableRow>
+              ))}
+              {data && data.map((row) => (
+                <TableRow
+                  key={row._id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.block_id[0].blockName}
+                  </TableCell>
+                  <TableCell align="center">{row.block_id[0].flat_id[5].flatNumber}</TableCell>
+                  <TableCell align="center">{row.block_id[0].flat_id[5].resident_id[0].residenttype}</TableCell>
+                  <TableCell align="center">{row.block_id[0].flat_id[5].resident_id.length}</TableCell>
+                  <TableCell align="center">{"Edit"}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
