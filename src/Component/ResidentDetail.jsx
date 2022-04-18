@@ -181,7 +181,7 @@ export const ResidentDetail = () => {
         </Box>
           <br />
           <br />
-          <Button variant="contained" onClick={addResident}>
+          <Button variant="contained" disabled={!name || !age || !gender || !apartmentName || !flatNumber || !blockName || !residenttype} onClick={addResident}>
             Add
           </Button>
         </form>

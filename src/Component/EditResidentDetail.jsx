@@ -180,7 +180,7 @@ export const EditResidentDetail = () => {
         </Box>
           <br />
           <br />
-          <Button variant="contained" onClick={addResident}>
+          <Button variant="contained" onClick={addResident} disabled={!name || !age || !gender || !apartmentName || !flatNumber || !blockName || !residenttype}>
             Update
           </Button>
         </form>

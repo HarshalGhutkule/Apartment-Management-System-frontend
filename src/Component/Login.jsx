@@ -4,9 +4,9 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addToken, addUsername } from "../Redux/Action";
+import { useNavigate,Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addToken, addUserId, addUsername } from "../Redux/Action";
 
 const Main = styled.div`
   align-items: center;
@@ -32,6 +32,7 @@ const Main = styled.div`
 
 export const Login = () => {
 
+    let token = useSelector((store)=>store.token);
     const navigate = useNavigate();
 
     const dispatchRedux = useDispatch();
@@ -63,9 +64,14 @@ export const Login = () => {
             dispatch({type:"userName",payload:""})
             dispatch({type:"password",payload:""})
             dispatchRedux(addUsername(state.userName))
+            dispatchRedux(addUserId(res.data.user._id));
             dispatchRedux(addToken(res.data.token))
             navigate("/")
         }).catch(()=>alert("Please try another username & password"))
+    }
+
+    if(token !== "") {
+      return <Navigate to="/"/>
     }
 
   return (
@@ -93,7 +99,7 @@ export const Login = () => {
           />
           <br />
           <br />
-          <Button variant="contained" onClick={userLogin}>
+          <Button variant="contained" onClick={userLogin} disabled={!userName || !password}>
             Log in
           </Button>
         </form>

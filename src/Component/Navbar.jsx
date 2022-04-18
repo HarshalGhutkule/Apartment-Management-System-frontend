@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addUsername } from "../Redux/Action";
+import { addToken, addUsername } from "../Redux/Action";
 
 const Main = styled.div`
   & a {
@@ -29,6 +29,7 @@ export const Navbar = () => {
 
   const clearUser = ()=>{
     dispatch(addUsername(""));
+    dispatch(addToken(""))
   }
   
   return (

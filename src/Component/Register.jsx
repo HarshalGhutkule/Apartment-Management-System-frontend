@@ -3,8 +3,9 @@ import styled from "styled-components";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { Link,useNavigate } from "react-router-dom";
+import { Link,useNavigate,Navigate } from "react-router-dom";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const Main = styled.div`
   align-items: center;
@@ -29,6 +30,8 @@ const Main = styled.div`
 `;
 
 export const Register = () => {
+
+    let token = useSelector((store)=>store.token);
 
     const navigate = useNavigate();
 
@@ -61,6 +64,10 @@ export const Register = () => {
             navigate("/login");
         }).catch(()=>alert("Password is Not Strong & username should be atleast 3 char"))
     }
+
+    if(token !== "") {
+      return <Navigate to="/"/>
+    }
     
   return (
     <Main>
@@ -87,7 +94,7 @@ export const Register = () => {
           />
           <br />
           <br />
-          <Button variant="contained" onClick={userRegistered}>
+          <Button variant="contained" onClick={userRegistered} disabled={!userName || !password}>
             Register
           </Button>
         </form>

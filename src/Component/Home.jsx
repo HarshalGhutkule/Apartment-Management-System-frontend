@@ -1,6 +1,5 @@
 import * as React from "react";
 import styled from "styled-components";
-import Pagination from "@mui/material/Pagination";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -32,7 +31,14 @@ const Main = styled.div`
   }
   & a{
     text-decoration:none;
-    color:green;
+    color:black;
+  }
+  & .editBtn{
+      color:green;
+  }
+  & .deleteBtn{
+    color:red;
+    cursor: pointer;
   }
   & h3{
     font-family: 'Open Sans', sans-serif;
@@ -42,6 +48,8 @@ const Main = styled.div`
 
 export const Home = () => {
 
+  let token = useSelector((store)=>store.token);
+  let userId = useSelector((store)=>store.userId);
   const [type, setType] = React.useState("");
   let [data, setData] = React.useState([]);
   let resident = useSelector((store)=>store.resident);
@@ -75,8 +83,18 @@ export const Home = () => {
 
   const getData = () => {
     axios.get("http://localhost:3001/resident").then((res) => {
-      setData(res.data);
-      dispatch(addDataToRedux(res.data));
+      let x = res.data.filter((a)=>a.manager_id === userId);
+      setData(x);
+      dispatch(addDataToRedux(x));
+    });
+  };
+
+  const deleteData = (id) => {
+    axios.delete(`http://localhost:3001/resident/${id}`,{
+      headers: {
+        'Authorization': `Bearer ${token}` 
+      }}).then(() => {
+      getData();
     });
   };
 
@@ -158,6 +176,7 @@ export const Home = () => {
                 <TableCell align="center">Type</TableCell>
                 <TableCell align="center">Resident</TableCell>
                 <TableCell align="center">Edit</TableCell>
+                <TableCell align="center">Action</TableCell>
               </TableRow>
           </TableHead>
           <TableBody>
@@ -175,7 +194,8 @@ export const Home = () => {
                   <TableCell align="center"><Link to={`/resident-info/${row.flatNumber}`}>{row.flatNumber}</Link></TableCell>
                   <TableCell align="center"><Link to={`/resident-info/${row.flatNumber}`}>{row.residenttype}</Link></TableCell>
                   <TableCell align="center"><Link to={`/resident-info/${row.flatNumber}`}>{1}</Link></TableCell>
-                  <TableCell align="center"><Link to={`/edit-resident-detail/${row._id}`}>{"Edit"}</Link></TableCell>
+                  <TableCell align="center"><Link to={`/edit-resident-detail/${row._id}`} className="editBtn">{"Edit"}</Link></TableCell>
+                  <TableCell align="center" className="deleteBtn" onClick={()=>deleteData(row._id)}>{"Delete"}</TableCell>
                 </TableRow>
               ))}
           </TableBody>
