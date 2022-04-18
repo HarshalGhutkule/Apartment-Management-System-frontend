@@ -59,7 +59,7 @@ export const Login = () => {
 
     const userLogin = (e)=>{
         e.preventDefault();
-        axios.post("http://localhost:3001/login",state).then((res)=>{
+        axios.post("https://apartment-mng.herokuapp.com/login",state).then((res)=>{
             alert("Login Successful");
             dispatch({type:"userName",payload:""})
             dispatch({type:"password",payload:""})

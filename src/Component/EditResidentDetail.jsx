@@ -84,7 +84,7 @@ export const EditResidentDetail = () => {
 
     const addResident = (e)=>{
         e.preventDefault();
-        axios.patch(`http://localhost:3001/resident/${id}`,state,{
+        axios.patch(`https://apartment-mng.herokuapp.com/resident/${id}`,state,{
             headers: {
               'Authorization': `Bearer ${token}` 
             }}).then(()=>{

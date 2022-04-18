@@ -57,7 +57,7 @@ export const Register = () => {
 
     const userRegistered = (e)=>{
         e.preventDefault();
-        axios.post("http://localhost:3001/register",state).then(()=>{
+        axios.post("https://apartment-mng.herokuapp.com/register",state).then(()=>{
             alert("Registration Successful");
             dispatch({type:"userName",payload:""})
             dispatch({type:"password",payload:""})

@@ -82,7 +82,7 @@ export const Home = () => {
 
 
   const getData = () => {
-    axios.get("http://localhost:3001/resident").then((res) => {
+    axios.get("https://apartment-mng.herokuapp.com/resident").then((res) => {
       let x = res.data.filter((a)=>a.manager_id === userId);
       setData(x);
       dispatch(addDataToRedux(x));
@@ -90,7 +90,7 @@ export const Home = () => {
   };
 
   const deleteData = (id) => {
-    axios.delete(`http://localhost:3001/resident/${id}`,{
+    axios.delete(`https://apartment-mng.herokuapp.com/resident/${id}`,{
       headers: {
         'Authorization': `Bearer ${token}` 
       }}).then(() => {

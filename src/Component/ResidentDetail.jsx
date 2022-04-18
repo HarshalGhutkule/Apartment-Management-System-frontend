@@ -78,7 +78,7 @@ export const ResidentDetail = () => {
 
     const addResident = (e)=>{
         e.preventDefault();
-        axios.post("http://localhost:3001/resident",state,{
+        axios.post("https://apartment-mng.herokuapp.com/resident",state,{
             headers: {
               'Authorization': `Bearer ${token}` 
             }}).then(()=>{
