@@ -59,7 +59,7 @@ export const Register = () => {
             dispatch({type:"userName",payload:""})
             dispatch({type:"password",payload:""})
             navigate("/login");
-        }).catch(()=>alert("Password is Not Strong"))
+        }).catch(()=>alert("Password is Not Strong & username should be atleast 3 char"))
     }
     
   return (

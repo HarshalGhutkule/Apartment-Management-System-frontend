@@ -6,7 +6,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addUsername } from "../Redux/Action";
@@ -15,6 +14,10 @@ const Main = styled.div`
   & a {
     text-decoration:none;
     color:white;
+  }
+  & p{
+    font-size:14px;
+    font-weight:600;
   }
 `;
 
@@ -41,7 +44,7 @@ export const Navbar = () => {
               sx={{ mr: 2 }}
             >
               <Link to={"/"}>
-                <MenuIcon />
+                <p>HOME</p>
               </Link>
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>

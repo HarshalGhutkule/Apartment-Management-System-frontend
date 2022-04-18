@@ -20,17 +20,23 @@ import { Link, Navigate} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { addDataToRedux } from "../Redux/Action";
+import TablePagination from '@mui/material/TablePagination';
 
 const Main = styled.div`
   & .features {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     border:1px solid #c4c4c4;
     padding:1%;
   }
   & a{
     text-decoration:none;
+    color:green;
+  }
+  & h3{
+    font-family: 'Open Sans', sans-serif;
+    color:#1976d2;
   }
 `;
 
@@ -42,18 +48,25 @@ export const Home = () => {
 
   const dispatch = useDispatch();
 
-  console.log(data);
 
   const user = useSelector((store)=>store.username);
 
 
   const handleChange = (event) => {
-    console.log(event.target.value);
     resident = resident.filter((a)=>event.target.value == a.residenttype);
-    console.log("data",data);
     setData(resident);
     setType(event.target.value);
   };
+
+  const searchBlock = (e)=>{
+    if(e.target.value == "") {
+      resident = resident;
+    }
+    else {
+      resident = resident.filter((a)=>e.target.value == a.blockName);
+    }
+    setData(resident);
+  }
 
   React.useEffect(()=>{
     getData();
@@ -78,14 +91,27 @@ export const Home = () => {
     }
   }
 
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
   if(user === "") {
     return <Navigate to="/register"/>
   }
 
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+
   return (
     <Main>
-      <br />
-      <br />
+      <h3>Apartment Name : {data[0] && data[0].apartmentName}</h3>
       <div className="features">
 
         <Link to={"/resident-detail"}>
@@ -94,9 +120,15 @@ export const Home = () => {
           >Add details</Button>
         </Link>
 
-        <TextField id="outlined-basic" label="Search" variant="outlined" />
+        <ButtonGroup
+          variant="contained"
+          aria-label="outlined primary button group"
+        >
+          <Button onClick={()=>sorting(1)}>Flat No. Asc</Button>
+          <Button onClick={()=>sorting(-1)}>Flat No. Desc</Button>
+        </ButtonGroup>
 
-        <Pagination count={10} color="primary" />
+        <TextField id="outlined-basic" label="Search by Block" variant="outlined" onChange={searchBlock}/>
 
         <Box sx={{ minWidth: 220 }}>
           <FormControl fullWidth>
@@ -113,46 +145,52 @@ export const Home = () => {
             </Select>
           </FormControl>
         </Box>
-
-        <ButtonGroup
-          variant="contained"
-          aria-label="outlined primary button group"
-        >
-          <Button onClick={()=>sorting(1)}>Flat No. Asc</Button>
-          <Button onClick={()=>sorting(-1)}>Flat No. Desc</Button>
-        </ButtonGroup>
       </div>
 
       <div>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Block</TableCell>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer sx={{ maxHeight: 440 }}>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead>
+          <TableRow>
+                <TableCell align="center">Block</TableCell>
                 <TableCell align="center">Flat No.</TableCell>
                 <TableCell align="center">Type</TableCell>
                 <TableCell align="center">Resident</TableCell>
                 <TableCell align="center">Edit</TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {data && data.map((row) => (
+          </TableHead>
+          <TableBody>
+            {data && data
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((row) => (
                 <TableRow
+                hover role="checkbox" tabIndex={-1}
                   key={row._id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell component="th" scope="row">
-                    {row.blockName}
+                  <TableCell component="th" scope="row" align="center">
+                  <Link to={`/resident-info/${row.flatNumber}`}>{row.blockName}</Link>
                   </TableCell>
-                  <TableCell align="center">{row.flatNumber}</TableCell>
-                  <TableCell align="center">{row.residenttype}</TableCell>
-                  <TableCell align="center">{1}</TableCell>
-                  <TableCell align="center">{"Edit"}</TableCell>
+                  <TableCell align="center"><Link to={`/resident-info/${row.flatNumber}`}>{row.flatNumber}</Link></TableCell>
+                  <TableCell align="center"><Link to={`/resident-info/${row.flatNumber}`}>{row.residenttype}</Link></TableCell>
+                  <TableCell align="center"><Link to={`/resident-info/${row.flatNumber}`}>{1}</Link></TableCell>
+                  <TableCell align="center"><Link to={`/edit-resident-detail/${row._id}`}>{"Edit"}</Link></TableCell>
                 </TableRow>
               ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={data.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Paper>
       </div>
     </Main>
   );
