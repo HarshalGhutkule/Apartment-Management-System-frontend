@@ -9,8 +9,21 @@ import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addToken, addUsername } from "../Redux/Action";
+import { devices } from '../Devices/device';
 
 const Main = styled.div`
+ @media ${devices.mobileL} {
+    min-width: 425px;
+    button{
+      width:85px;
+      height:35px;
+      font-size:12px;
+    }
+    .apart{
+      font-size:16px;
+      font-weight:600;
+    }
+}
   & a {
     text-decoration:none;
     color:white;
@@ -48,7 +61,7 @@ export const Navbar = () => {
                 <p>HOME</p>
               </Link>
             </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} className="apart">
               APARTMENT MANAGER
             </Typography>
             <Link to={"/register"}>

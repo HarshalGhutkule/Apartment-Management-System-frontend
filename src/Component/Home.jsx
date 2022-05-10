@@ -20,8 +20,24 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { addDataToRedux } from "../Redux/Action";
 import TablePagination from '@mui/material/TablePagination';
+import { devices } from '../Devices/device';
 
 const Main = styled.div`
+  @media ${devices.mobileL} {
+    min-width: 425px;
+    button{
+      width:85px;
+      height:35px;
+      font-size:10px;
+    }
+    input{
+      width:50px;
+      height:5px;
+    }
+    select{
+      height:5px;
+    }
+  }
   & .features {
     display: flex;
     justify-content: space-between;
